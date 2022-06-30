@@ -32,6 +32,7 @@ typedef struct {
   int sp;
 } STK;
 
+FRC ERROR_FRC = {0, 0};
 POR por;
 OSTK ostack;
 STK stack;
@@ -405,7 +406,10 @@ int calc(char *x) {
       printf("\033[31m **Error: Cannot calculation a fractional power.\n");
       return -1;
     }
-    if (spush(power(a, b.dnm))) {
+    if (!(a = power(a, b.dnm)).nmr) {
+      return -1;
+    }
+    if (spush(a)) {
       return -1;
     }
   } else if (x[0] == '!') {
@@ -486,7 +490,7 @@ FRC power(FRC x, int n) {
   if (n < 0) {
     if (isZero(x)) {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
-      return newFrc(-1, 1);
+      return ERROR_FRC;
     }
     while (n++) {
       ans = frcDiv(ans, x);
