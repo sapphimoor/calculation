@@ -38,4 +38,4 @@ To use this program, run this in a terminal and input calculation formula you wa
 |6              |`+` `-` (binary operator)|
 
 ## Options
-- `-r` (or `--rev-por`) : show the reverse-polish notation you inputed formula
+- `-r` (or `--rp`) : show the reverse-polish notation you inputed formula
