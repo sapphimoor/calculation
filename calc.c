@@ -32,12 +32,16 @@ typedef struct {
   int sp;
 } STK;
 
+int RPN_SHOW_OPT = 0;
+
 FRC ERROR_FRC = {0, 0};
+OBJ prePushedObj = LPAREN;
 POR por;
 OSTK ostack;
 STK stack;
-OBJ prePushedObj = LPAREN;
 
+void checkOptions(int, char**);
+int strcmp(char*, char*);
 FRC newFrc(int, int);
 FRC frcPlus(FRC, FRC);
 FRC frcMinus(FRC, FRC);
@@ -65,6 +69,8 @@ int main(int argc, char **argv) {
   int i, j, b = 0, e;
   char x[N];
 
+  checkOptions(argc, argv);
+
   por.sp = 0;
   ostack.sp = 0;
   stack.sp = 0;
@@ -81,7 +87,7 @@ int main(int argc, char **argv) {
     ppush(x);
   }
 
-  if (argc != 1) {
+  if (RPN_SHOW_OPT) {
     printf("\nReverse polish notation is: \n");
     for (i = 0; i < por.sp; i++) {
       printf(" %s", por.stack[i]);
@@ -98,6 +104,22 @@ int main(int argc, char **argv) {
   printAns(spop());
 
   return 0;
+}
+
+void checkOptions(int argc, char **argv) {
+  if (argc == 2 && (!strcmp(argv[1], "-r") || !strcmp(argv[1], "--rpn"))) {
+    RPN_SHOW_OPT = 1;
+  }
+}
+
+int strcmp(char *a, char *b) {
+  int i;
+  for (i = 0; a[i] != '\0' && b[i] != '\0'; i++) {
+    if (a[i] != b[i]) {
+      break;
+    }
+  }
+  return a[i] - b[i];
 }
 
 FRC newFrc(int d, int n) {
