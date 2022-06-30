@@ -5,12 +5,8 @@
 
 typedef enum {
   LPAREN,
-  RPAREN,
-  UNARY_PLUS,
-  UNARY_MINUS,
-  FACTORIAL,
-  NUMBER,
-  OTHER
+  NUMBER_LIKE,
+  OPERATOR
 } OBJ;
 
 typedef struct {
@@ -217,13 +213,13 @@ int revp(char x) {
         if (opush('m')) {
           return -1;
         }
-        prePushedObj = UNARY_MINUS;
+        prePushedObj = OPERATOR;
       }
-    } else if (prePushedObj == RPAREN || prePushedObj == NUMBER || prePushedObj == FACTORIAL) {
+    } else if (prePushedObj == NUMBER_LIKE) {
       if (opush(x)) {
         return -1;
       }
-      prePushedObj = OTHER;
+      prePushedObj = OPERATOR;
     } else {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
@@ -246,17 +242,17 @@ int revp(char x) {
         break;
       }
     }
-    if (prePushedObj == RPAREN || prePushedObj == NUMBER || prePushedObj == FACTORIAL) {
+    if (prePushedObj == NUMBER_LIKE) {
       if (opush(x)) {
         return -1;
       }
-      prePushedObj = OTHER;
+      prePushedObj = OPERATOR;
     } else {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
     }
   } else if (x == '(') {
-    if (prePushedObj != RPAREN && prePushedObj != NUMBER && prePushedObj != FACTORIAL) {
+    if (prePushedObj != NUMBER_LIKE) {
       if (opush(x)) {
         return -1;
       }
@@ -282,23 +278,22 @@ int revp(char x) {
         opush(dummy[0]);
       }
     }
-    prePushedObj = RPAREN;
+    prePushedObj = NUMBER_LIKE;
   } else if (x == '^' || x == 'P' || x == 'C') {
-    if (prePushedObj == RPAREN || prePushedObj == NUMBER || prePushedObj == FACTORIAL) {
+    if (prePushedObj == NUMBER_LIKE) {
       if (opush(x)) {
         return -1;
       }
-      prePushedObj = OTHER;
+      prePushedObj = OPERATOR;
     } else {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
     }
   } else if (x == '!') {
-    if (prePushedObj == RPAREN || prePushedObj == NUMBER || prePushedObj == FACTORIAL) {
+    if (prePushedObj == NUMBER_LIKE) {
       if (ppush("!")) {
         return -1;
       }
-      prePushedObj = FACTORIAL;
     } else {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
@@ -335,11 +330,11 @@ int revp(char x) {
       }
     }
     dummy[i] = '\0';
-    if (prePushedObj != RPAREN && prePushedObj != NUMBER && prePushedObj != FACTORIAL) {
+    if (prePushedObj != NUMBER_LIKE) {
       if (ppush(dummy)) {
         return -1;
       }
-      prePushedObj = NUMBER;
+      prePushedObj = NUMBER_LIKE;
     } else {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
