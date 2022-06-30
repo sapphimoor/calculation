@@ -28,7 +28,7 @@ To use this program, run this in a terminal and input calculation formula you wa
 - brackets
   - `()` : calculate internals preferentially
 
-|priority number|operators or synbols     |
+|priority number|operators or symbols     |
 |---------------|-------------------------|
 |1              |`()`                     |
 |2              |`!`                      |
