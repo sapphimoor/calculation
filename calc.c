@@ -181,7 +181,7 @@ int revp(char x) {
   int i = 0, flag = 0;
   char dummy[CSIZE];
 
-  if (x == '=' || x == 10) { // 10 == Enter-key
+  if (x == '=' || x == '\n') {
     return 0;
   }
   while (x == ' ') {
@@ -195,7 +195,7 @@ int revp(char x) {
       if (dummy[0] == '(') {
         opush(dummy[0]);
         break;
-      } else if (dummy[0] == '*' || dummy[0] == 47 || dummy[0] == '^' ||
+      } else if (dummy[0] == '*' || dummy[0] == '/' || dummy[0] == '^' ||
                   dummy[0] == 'P' || dummy[0] == 'C') {
 
         if (ppush(dummy)) {
@@ -224,7 +224,7 @@ int revp(char x) {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
     }
-  } else if (x == '*' || x == 47) { // 47 == '/'
+  } else if (x == '*' || x == '/') {
     dummy[1] = '\0';
     while (ostack.sp) {
       dummy[0] = opop();
@@ -235,7 +235,7 @@ int revp(char x) {
         if (ppush(dummy)) {
           return -1;
         }
-      } else if (dummy[0] == '*' || dummy[0] == 47) {
+      } else if (dummy[0] == '*' || dummy[0] == '/') {
         if (ppush(dummy)) {
           return -1;
         }
@@ -398,7 +398,7 @@ int calc(char *x) {
     if (spush(frcMul(a, b))) {
       return -1;
     }
-  } else if (x[0] == 47) { // 47 == '/'
+  } else if (x[0] == '/') {
     if (stack.sp < 2) {
       printf("\033[31m **Error: Incorrect calculation formula.\n");
       return -1;
